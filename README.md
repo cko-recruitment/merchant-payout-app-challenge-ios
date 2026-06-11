@@ -279,7 +279,6 @@ Your solution will be evaluated based on:
 
 - For payouts **over £1,000** (100,000 pence), require biometric authentication (Face ID / Touch ID) before the confirmation screen is shown
 - Handle three outcomes: success, user cancellation (show a "cancelled" message), biometrics unavailable (show a fallback message)
-- The £1,000 business rule must be **testable independently of hardware**
 
 **Simulator testing**: In Simulator menu, go to `Features > Face ID > Enrolled`. Then trigger your payout and select `Features > Face ID > Matching Face`.
 
