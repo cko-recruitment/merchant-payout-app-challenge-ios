@@ -36,7 +36,8 @@ Your task is to build a merchant dashboard and payout flow that allows users to:
 
 The project comes with the following pre-configured:
 
-- **iOS 17+, Swift 5.9+** — target platform
+- **iOS 17+** — deployment target. Keep your solution compatible with iOS 17.
+- **Xcode 26 or later** — needed to build the provided project. Within that, which Swift language features you use is up to you.
 - **SwiftUI** — UI framework (UIKit is permitted but be prepared to discuss why)
 - **URLSession with async/await** — networking (no third-party networking libraries)
 - **XCTest** — testing framework
@@ -173,7 +174,7 @@ Your solution will be evaluated based on:
 * Fetch balance data using the provided API client.
 * Display an account balance section showing the merchant's available balance and pending balance with the currency symbol from the API response.
 * Display a list of the 3 most recent activity items in a single-row layout showing only the description and amount.
-* Display a "show more" button that opens a modal with a full list of activity items.
+* Display a "View All" button that opens the full list of activity items. You can push a new screen or present a sheet (modal); we do not assess which one you choose.
 * Handle loading and error states gracefully.
 
 <details>
@@ -195,11 +196,11 @@ Your solution will be evaluated based on:
 
 **Requirements**:
 
-* Display the list of all activity items with type, description, amount, and date (formatted as `DD MM YYYY`).
-* Implement "Infinite Scroll" functionality on the transaction list modal. Load more items automatically as the user scrolls to the bottom.
+* Display the list of all activity items with type, description, amount, and date. Use any clear, consistent date format, for example `18 May 2026` (as in the screenshots) or `18 05 2026`.
+* Implement "Infinite Scroll" functionality on the transaction list. Load more items automatically as the user scrolls to the bottom.
 * Use cursor-based pagination to fetch additional activity items.
 * Handle loading and error states gracefully.
-* Group transactions by local date (Today / Yesterday / 18 May 2025).
+* Group transactions by local date (Today / Yesterday / 18 May 2026).
 
 <details>
 <summary>📱 Reference Screenshots</summary>
@@ -223,10 +224,19 @@ Your solution will be evaluated based on:
 
 * Use a numeric input field for the payout amount.
 * Use a dropdown to select the currency (`GBP` or `EUR`). The currency can be different from the merchant's account currency.
-* Capture the destination IBAN 
-  * Valid IBAN formats (e.g., `GB29NWBK60161331926819`).
-  * Invalid IBAN format (e.g., `FR1212345123451234567A12310131231231231`).
-* Ensure the "Confirm" button is disabled if the input is empty, zero, or negative.
+* Capture the destination IBAN and validate it against these examples:
+
+  | IBAN | Expected | Why |
+  | --- | --- | --- |
+  | `GB29NWBK60161331926819` | Must accept | Valid UK IBAN |
+  | `FR1420041010050500013M02606` | Must accept | Valid French IBAN |
+  | `FR1212345123451234567A12310131231231231` | Must reject | 39 characters, and no IBAN is longer than 34 |
+  | `GB28NWBK60161331926819` | Should reject if you validate fully | Wrong check digits, fails mod-97 |
+  | `GB29NWBK6016133192681` | Should reject if you validate fully | 21 characters, but a UK IBAN is 22 |
+
+  The "Must" rows are the minimum. Beyond that, how far you go is up to you, so tell us what you chose and why. The hint text under the IBAN field in the screenshots is illustrative. Update it to describe the rules you implement.
+
+* Ensure the "Continue" button on the payout form is disabled while the amount is empty, zero, or negative. How you handle an invalid IBAN (disabling that button, an inline error, or both) is your choice.
 * Display a confirmation screen summarizing the transaction before execution (as shown in the reference images).
 * Handle success response by showing Payout confirmation with amount and currency.
 * Handle failures (e.g., `4xx`, `5xx` errors, insufficient funds) and network errors.
