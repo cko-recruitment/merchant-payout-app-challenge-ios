@@ -224,12 +224,18 @@ Your solution will be evaluated based on:
 
 * Use a numeric input field for the payout amount.
 * Use a dropdown to select the currency (`GBP` or `EUR`). The currency can be different from the merchant's account currency.
-* Capture the destination IBAN and validate it:
-  * Must accept these valid IBANs: `GB29NWBK60161331926819` (UK) and `FR1420041010050500013M02606` (France).
-  * Must reject this invalid IBAN: `FR1212345123451234567A12310131231231231` (39 characters, and no IBAN is longer than 34).
-  * Should also reject these if you validate fully: `GB28NWBK60161331926819` (wrong check digits, fails mod-97) and `GB29NWBK6016133192681` (21 characters, but a UK IBAN is 22).
-  * The first two bullets are the minimum. Beyond that, how far you go is up to you, so tell us what you chose and why.
-  * The hint text under the IBAN field in the screenshots is illustrative. Update it to describe the rules you implement.
+* Capture the destination IBAN and validate it against these examples:
+
+  | IBAN | Expected | Why |
+  | --- | --- | --- |
+  | `GB29NWBK60161331926819` | Must accept | Valid UK IBAN |
+  | `FR1420041010050500013M02606` | Must accept | Valid French IBAN |
+  | `FR1212345123451234567A12310131231231231` | Must reject | 39 characters, and no IBAN is longer than 34 |
+  | `GB28NWBK60161331926819` | Should reject if you validate fully | Wrong check digits, fails mod-97 |
+  | `GB29NWBK6016133192681` | Should reject if you validate fully | 21 characters, but a UK IBAN is 22 |
+
+  The "Must" rows are the minimum. Beyond that, how far you go is up to you, so tell us what you chose and why. The hint text under the IBAN field in the screenshots is illustrative. Update it to describe the rules you implement.
+
 * Ensure the "Continue" button on the payout form is disabled while the amount is empty, zero, or negative. How you handle an invalid IBAN (disabling that button, an inline error, or both) is your choice.
 * Display a confirmation screen summarizing the transaction before execution (as shown in the reference images).
 * Handle success response by showing Payout confirmation with amount and currency.
